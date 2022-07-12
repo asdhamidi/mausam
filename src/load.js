@@ -2,6 +2,7 @@ import "./style.css";
 import searchIcon from "./assets/search.svg";
 import humid from "./assets/humidity.svg";
 import windy from "./assets/wind.svg";
+import fl from "./assets/fl.svg";
 import { convert } from "./helper";
 
 let UI = (() => {
@@ -44,15 +45,15 @@ let UI = (() => {
     let TDInfo = document.createElement("div");
     TDInfo.className = "TDInfo";
 
-    let timeInfo = document.createElement("div");
-    timeInfo.textContent = "6:09 PM";
-    timeInfo.className = "time";
-    TDInfo.appendChild(timeInfo);
-
     let dateInfo = document.createElement("div");
-    dateInfo.textContent = "31st February, 1911";
+    dateInfo.textContent = "February 31st, 2222";
     dateInfo.className = "date";
     TDInfo.appendChild(dateInfo);
+
+    let timeInfo = document.createElement("div");
+    timeInfo.textContent = "5 minutes ago";
+    timeInfo.className = "time";
+    TDInfo.appendChild(timeInfo);
 
     main.appendChild(TDInfo);
 
@@ -78,6 +79,30 @@ let UI = (() => {
 
     let otherInfo = document.createElement("div");
     otherInfo.className = "otherInfo";
+
+    let feelsLike = document.createElement("div");
+    feelsLike.className = "feelsLike";
+
+    let feelsLikeIcon = new Image();
+    feelsLikeIcon.className = "feelsLikeIcon";
+    feelsLikeIcon.src = fl;
+
+    let feelsLikeInfo = document.createElement("div");
+    feelsLikeInfo.className = "feelsLikeInfo";
+
+    let feelsLikeTitle = document.createElement("div");
+    feelsLikeTitle.textContent = "Feels Like";
+
+    let feelsLikeText = document.createElement("div");
+    feelsLikeText.textContent = "24° C";
+    feelsLikeText.className = "feelsLikeText";
+
+    feelsLikeInfo.appendChild(feelsLikeTitle);
+    feelsLikeInfo.appendChild(feelsLikeText);
+
+    feelsLike.appendChild(feelsLikeIcon);
+    feelsLike.appendChild(feelsLikeInfo);
+    otherInfo.appendChild(feelsLike);
 
     let humidity = document.createElement("div");
     humidity.className = "humidity";

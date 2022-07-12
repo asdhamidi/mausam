@@ -1,4 +1,4 @@
-import { UI } from "./loader";
+import { UI } from "./load";
 import { updater } from "./update";
 import "./style.css";
 

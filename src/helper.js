@@ -29,9 +29,11 @@ function convert() {
   if (updater.unit == "M") {
     document.querySelector(".tempText").textContent = tempData.tempF + "° F";
     document.querySelector(".windText").textContent = tempData.windF + " Mph";
+    document.querySelector(".feelsLikeText").textContent = tempData.flF + "° F";
   } else {
     document.querySelector(".tempText").textContent = tempData.tempC + "° C";
     document.querySelector(".windText").textContent = tempData.windC + " KMh";
+    document.querySelector(".feelsLikeText").textContent = tempData.flC + "° C";
   }
   updater.changeUnit();
 }

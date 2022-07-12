@@ -1,6 +1,7 @@
 export { convertCtoF, capitalize, convert };
-import { tempData, updater } from "./update";
+import { updater } from "./update";
 
+// Unit Conversion Utility Functions.
 function convertCtoF(C) {
   return (C * 9) / 5 + 32;
 }
@@ -9,6 +10,7 @@ function convertFtoC(F) {
   return (5 / 9) * (F - 32);
 }
 
+// Capitalizes the first letter of each word.
 function capitalize(S) {
   let res = S[0].toUpperCase();
   let i = 1;
@@ -25,15 +27,22 @@ function capitalize(S) {
   return res;
 }
 
+// Converts the text of DOM objects when unit conversion is required.
 function convert() {
-  if (updater.unit == "M") {
-    document.querySelector(".tempText").textContent = tempData.tempF + "° F";
-    document.querySelector(".windText").textContent = tempData.windF + " Mph";
-    document.querySelector(".feelsLikeText").textContent = tempData.flF + "° F";
+  if (updater.getUnit() === "M") {
+    document.querySelector(".tempText").textContent =
+      updater.tempData.tempF + "° F";
+    document.querySelector(".windText").textContent =
+      updater.tempData.windF + " Mph";
+    document.querySelector(".feelsLikeText").textContent =
+      updater.tempData.flF + "° F";
   } else {
-    document.querySelector(".tempText").textContent = tempData.tempC + "° C";
-    document.querySelector(".windText").textContent = tempData.windC + " KMh";
-    document.querySelector(".feelsLikeText").textContent = tempData.flC + "° C";
+    document.querySelector(".tempText").textContent =
+      updater.tempData.tempC + "° C";
+    document.querySelector(".windText").textContent =
+      updater.tempData.windC + " KMh";
+    document.querySelector(".feelsLikeText").textContent =
+      updater.tempData.flC + "° C";
   }
   updater.changeUnit();
 }

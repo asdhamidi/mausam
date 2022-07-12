@@ -1,14 +1,33 @@
 import "./style.css";
+
+// All icons used are from https://tablericons.com/
 import searchIcon from "./assets/search.svg";
 import humid from "./assets/humidity.svg";
 import windy from "./assets/wind.svg";
 import fl from "./assets/fl.svg";
+
 import { convert } from "./helper";
+import { updater } from "./update";
 
 let UI = (() => {
   function load() {
     loadSideBar();
     loadInfoBar();
+    // Loading Random Initial Information
+    let cities = [
+      "Muzaffarpur",
+      "Dehradun",
+      "Delhi",
+      "Mumbai",
+      "Bangalore",
+      "Shimla",
+      "Srinagar",
+      "Leh",
+      "Port Blair",
+    ];
+    document.querySelector(".searchBar INPUT").value =
+      cities[Math.floor(Math.random() * cities.length)];
+    updater.update();
   }
 
   function loadSideBar() {
@@ -22,7 +41,6 @@ let UI = (() => {
 
     let cityName = document.createElement("div");
     cityName.className = "cityName";
-    cityName.textContent = "Narnia";
     aside.appendChild(cityName);
 
     loadSearchBar(aside);
@@ -34,6 +52,7 @@ let UI = (() => {
 
     let searchText = document.createElement("INPUT");
     searchText.setAttribute("type", "text");
+    searchText.placeholder = "City Name...";
     searchBar.appendChild(searchText);
 
     aside.append(searchBar);
@@ -46,12 +65,10 @@ let UI = (() => {
     TDInfo.className = "TDInfo";
 
     let dateInfo = document.createElement("div");
-    dateInfo.textContent = "February 31st, 2222";
     dateInfo.className = "date";
     TDInfo.appendChild(dateInfo);
 
     let timeInfo = document.createElement("div");
-    timeInfo.textContent = "5 minutes ago";
     timeInfo.className = "time";
     TDInfo.appendChild(timeInfo);
 
@@ -59,7 +76,6 @@ let UI = (() => {
 
     let description = document.createElement("div");
     description.className = "desc";
-    description.textContent = "Sunny & Magical";
 
     let weatherInfo = document.createElement("div");
     weatherInfo.className = "weatherInfo";
@@ -74,84 +90,14 @@ let UI = (() => {
 
     let tempText = document.createElement("div");
     tempText.className = "tempText";
-    tempText.textContent = "19° C";
     temp.appendChild(tempText);
 
     let otherInfo = document.createElement("div");
     otherInfo.className = "otherInfo";
 
-    let feelsLike = document.createElement("div");
-    feelsLike.className = "feelsLike";
-
-    let feelsLikeIcon = new Image();
-    feelsLikeIcon.className = "feelsLikeIcon";
-    feelsLikeIcon.src = fl;
-
-    let feelsLikeInfo = document.createElement("div");
-    feelsLikeInfo.className = "feelsLikeInfo";
-
-    let feelsLikeTitle = document.createElement("div");
-    feelsLikeTitle.textContent = "Feels Like";
-
-    let feelsLikeText = document.createElement("div");
-    feelsLikeText.textContent = "24° C";
-    feelsLikeText.className = "feelsLikeText";
-
-    feelsLikeInfo.appendChild(feelsLikeTitle);
-    feelsLikeInfo.appendChild(feelsLikeText);
-
-    feelsLike.appendChild(feelsLikeIcon);
-    feelsLike.appendChild(feelsLikeInfo);
-    otherInfo.appendChild(feelsLike);
-
-    let humidity = document.createElement("div");
-    humidity.className = "humidity";
-
-    let humidityIcon = new Image();
-    humidityIcon.className = "humidityIcon";
-    humidityIcon.src = humid;
-
-    let humidityInfo = document.createElement("div");
-    humidityInfo.className = "humidityInfo";
-
-    let humidityTitle = document.createElement("div");
-    humidityTitle.textContent = "Humidity";
-
-    let humidityText = document.createElement("div");
-    humidityText.textContent = "1%";
-    humidityText.className = "humidityText";
-
-    humidityInfo.appendChild(humidityTitle);
-    humidityInfo.appendChild(humidityText);
-
-    humidity.appendChild(humidityIcon);
-    humidity.appendChild(humidityInfo);
-    otherInfo.appendChild(humidity);
-
-    let wind = document.createElement("div");
-    wind.className = "wind";
-
-    let windIcon = new Image();
-    windIcon.className = "windIcon";
-    windIcon.src = windy;
-
-    let windInfo = document.createElement("div");
-    windInfo.className = "windInfo";
-
-    let windTitle = document.createElement("div");
-    windTitle.textContent = "Wind";
-
-    let windText = document.createElement("div");
-    windText.textContent = "12 KM/H";
-    windText.className = "windText";
-
-    windInfo.appendChild(windTitle);
-    windInfo.appendChild(windText);
-
-    wind.appendChild(windIcon);
-    wind.appendChild(windInfo);
-
-    otherInfo.appendChild(wind);
+    otherInfo.appendChild(createInfoItemLoader("feelsLike", fl, "Feels Like"));
+    otherInfo.appendChild(createInfoItemLoader("humidity", humid, "Humidity"));
+    otherInfo.appendChild(createInfoItemLoader("wind", windy, "Wind"));
 
     main.appendChild(description);
     main.appendChild(temp);
@@ -165,6 +111,35 @@ let UI = (() => {
     loadCFButton(main);
   }
 
+  // Creates and returns elements for sections like Humidity, Wind Speed Etc.
+  function createInfoItemLoader(name, icon, title) {
+    let mainDiv = document.createElement("div");
+    mainDiv.className = name;
+
+    let mainDivIcon = new Image();
+    mainDivIcon.className = `${name}Icon`;
+    mainDivIcon.src = icon;
+
+    let mainDivInfo = document.createElement("div");
+    mainDivInfo.className = `${name}Info`;
+
+    let mainDivTitle = document.createElement("div");
+    mainDivTitle.className = `${name}Title`;
+    mainDivTitle.textContent = title;
+
+    let mainDivText = document.createElement("div");
+    mainDivText.className = `${name}Text`;
+
+    mainDivInfo.appendChild(mainDivTitle);
+    mainDivInfo.appendChild(mainDivText);
+
+    mainDiv.appendChild(mainDivIcon);
+    mainDiv.appendChild(mainDivInfo);
+
+    return mainDiv;
+  }
+
+  // Creates the Celsius/Farhenheit toggle button.
   function loadCFButton(main) {
     let btn = document.createElement("label");
     btn.className = "switch";
@@ -183,18 +158,25 @@ let UI = (() => {
     main.appendChild(btn);
   }
 
+  // Search Bar Related Utitlity Functions.
   let openSearchBar = () => {
     document.querySelector(".searchBar").classList.add("searchShow");
     document.querySelector(".blur").classList.add("blur-active");
   };
+
   let closeSearchBar = () => {
     document.querySelector(".searchBar").classList.remove("searchShow");
     document.querySelector(".blur").classList.remove("blur-active");
   };
+
+  let isSearchBarOpen = () =>
+    document.querySelector(".searchBar").classList.contains("searchShow");
+
   return {
     load,
     openSearchBar,
     closeSearchBar,
+    isSearchBarOpen,
   };
 })();
 
